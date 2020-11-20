@@ -1,4 +1,5 @@
 use std::collections::HashSet;
+use std::iter::FromIterator;
 
 fn main() {
     println!("Hello, world!");
@@ -22,6 +23,10 @@ fn neighbours( cell: Cell ) -> Vec<Cell> {
 }
 
 fn next_generation( alive_cells: &HashSet<Cell> ) -> HashSet<Cell> {
+    // pseudo code:
+    // let dead_cells = alive_cells.flatmap(neighbours) - alive_cells
+    // let next_gen = alive_cells.filter(cell -> stays_alive(cell, alive_cells)) 
+    //                 + dead_cells.filter(cell -> becomes_alive(cell, alive_cells))
     alive_cells.clone()
 }
 
@@ -60,5 +65,21 @@ mod tests {
         square.insert(Cell { x: 1, y: 0 });
         square.insert(Cell { x: 1, y: 1 });
         assert_eq!(square, next_generation(&square));
+    }
+
+    // TODO
+    //#[test]
+    fn test_next_generation_blinker() {
+        let blinker1 = HashSet::from_iter(vec![
+            Cell { x: 1, y: 0 },
+            Cell { x: 1, y: 1 }, 
+            Cell { x: 1, y: 2 }
+        ]);
+        let blinker2 = HashSet::from_iter(vec![
+            Cell { x: 0, y: 1 },
+            Cell { x: 1, y: 1 }, 
+            Cell { x: 2, y: 1 }
+        ]);
+        assert_eq!(blinker2, next_generation(&blinker1));
     }
 }

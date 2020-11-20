@@ -1,8 +1,10 @@
+use std::collections::HashSet;
+
 fn main() {
     println!("Hello, world!");
 }
 
-#[derive(PartialEq, Debug, Clone)]
+#[derive(Hash, Eq, PartialEq, Debug, Clone)]
 struct Cell {
     x: i32,
     y: i32,
@@ -19,7 +21,7 @@ fn neighbours( cell: Cell ) -> Vec<Cell> {
         Cell { x: cell.x + 1, y: cell.y - 1 }]
 }
 
-fn next_generation( alive_cells: &Vec<Cell> ) -> Vec<Cell> {
+fn next_generation( alive_cells: &HashSet<Cell> ) -> HashSet<Cell> {
     alive_cells.clone()
 }
 
@@ -52,12 +54,11 @@ mod tests {
 
     #[test]
     fn test_next_generation_square() {
-        let square = vec![
-            Cell { x: 0, y: 0 },
-            Cell { x: 0, y: 1 }, 
-            Cell { x: 1, y: 0 }, 
-            Cell { x: 1, y: 1 }
-        ];
+        let mut square = HashSet::new();
+        square.insert(Cell { x: 0, y: 0 });
+        square.insert(Cell { x: 0, y: 1 });
+        square.insert(Cell { x: 1, y: 0 });
+        square.insert(Cell { x: 1, y: 1 });
         assert_eq!(square, next_generation(&square));
     }
 }
